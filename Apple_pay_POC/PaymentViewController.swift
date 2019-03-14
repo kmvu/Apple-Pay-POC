@@ -37,8 +37,8 @@ class PaymentViewController: UIViewController {
         return button
     }()
     
-    let supportedPaymentNetworks: [PKPaymentNetwork] = [.visa, .masterCard, .amex]
-    let appleMerchantId = "merchant.tigerspike.applepay.poc" // Change this..
+    let supportedPaymentNetworks: [PKPaymentNetwork] = [.visa, .masterCard, .amex, .JCB]
+    let appleMerchantId = "merchant.com.adyen.flyscoot.test"
     
     let shippingCost: NSDecimalNumber = NSDecimalNumber(decimal: 2.0)
     var summaryItems: [PKPaymentSummaryItem] = {
@@ -78,8 +78,10 @@ class PaymentViewController: UIViewController {
         request.countryCode = "SG"
         request.currencyCode = "SGD"
         request.paymentSummaryItems = summaryItems
+        request.requiredBillingContactFields = Set<PKContactField>([.postalAddress, .phoneNumber, .phoneticName])
+        
         request.requiredShippingContactFields =
-            Set<PKContactField>([.name, .emailAddress, .phoneNumber, .postalAddress])
+            Set<PKContactField>([.name])
         
         var shippingMethods: [PKShippingMethod] = []
         ShippingMethod.ShippingMethodOptions.forEach { method in
